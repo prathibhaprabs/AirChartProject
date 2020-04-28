@@ -56,7 +56,13 @@ class AirChart(
         iCombined: AirChartCombined.ICombined,
         getCombinedChart: ((lineChart: CombinedChart) -> Unit)? = null
     ) {
-        AirChartCombined.show(activity, layoutInflater, chartHolderViewGroup, iCombined, getCombinedChart)
+        AirChartCombined.show(
+            activity,
+            layoutInflater,
+            chartHolderViewGroup,
+            iCombined,
+            getCombinedChart
+        )
     }
 
     fun showLineChart(

@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.charts.LineChart
 import com.google.gson.Gson
 import com.mumayank.airchart.charts.bar.AirChartBar
+import com.mumayank.airchart.charts.bar.AirChartCombined
 import com.mumayank.airchart.charts.bar.AirChartLine
-import com.mumayank.airchart.data_classes.AdditionalValue
-import com.mumayank.airchart.data_classes.Bar
-import com.mumayank.airchart.data_classes.Line
-import com.mumayank.airchart.data_classes.Value
+import com.mumayank.airchart.data_classes.*
 
 class AirChart(
     val activity: Activity,
@@ -51,6 +50,13 @@ class AirChart(
         getLineChart: ((lineChart: LineChart) -> Unit)? = null
     ) {
         AirChartLine.show(activity, layoutInflater, chartHolderViewGroup, iLine, getLineChart)
+    }
+
+    fun showCombinedChart(
+        iCombined: AirChartCombined.ICombined,
+        getCombinedChart: ((lineChart: CombinedChart) -> Unit)? = null
+    ) {
+        AirChartCombined.show(activity, layoutInflater, chartHolderViewGroup, iCombined, getCombinedChart)
     }
 
     fun showLineChart(
@@ -204,6 +210,88 @@ class AirChart(
 
                     override fun getIsAnimationRequired(): Boolean? {
                         return bar.isAnimationRequired
+                    }
+
+                })
+            }
+        } catch (e: Exception) {
+            Log.e("AirChart", e.message ?: "Some error occurred")
+        }
+    }
+
+    fun showCombinedChart(
+        jsonString: String,
+        getCombinedChart: ((combinedChart: CombinedChart) -> Unit)? = null
+    ) {
+        try {
+            val combined = Gson().fromJson(jsonString, Combined::class.java)
+            if (combined == null) {
+                throw Exception()
+            } else {
+                Combined(
+                    combined.title,
+                    combined.xAxisTitle,
+                    combined.xAxisLabels,
+                    combined.yLeftAxisTitle,
+                    combined.yRightAxisTitle,
+                    combined.yAxisBarValues,
+                    combined.yAxisLineValues,
+                    combined.colors,
+                    combined.subTitle,
+                    combined.decimalFormatPattern,
+                    combined.additionalValues,
+                    combined.isAnimationRequired,
+                    combined.isLineCurved
+                )
+
+                showCombinedChart(object : AirChartCombined.ICombined {
+
+                    override fun getTitle(): String {
+                        return combined.title
+                    }
+
+                    override fun getXAxisTitle(): String {
+                        return combined.xAxisTitle
+                    }
+
+                    override fun getXAxisLabels(): ArrayList<String> {
+                        return combined.xAxisLabels
+                    }
+
+                    override fun getYLeftAxisTitle(): String {
+                        return combined.yLeftAxisTitle
+                    }
+
+                    override fun getYRightAxisTitle(): String {
+                        return combined.yRightAxisTitle
+                    }
+
+                    override fun getYAxisBarValues(): java.util.ArrayList<Value> {
+                        return combined.yAxisBarValues
+                    }
+
+                    override fun getYAxisLineValues(): java.util.ArrayList<Value> {
+                        return combined.yAxisLineValues
+                    }
+
+                    override fun getColors(): ArrayList<String>? {
+                        return combined.colors
+                    }
+
+                    override fun getSubTitle(): String? {
+                        return combined.subTitle
+                    }
+
+                    override fun getDecimalFormatPattern(): String? {
+                        return combined.decimalFormatPattern
+                    }
+
+                    override fun getAdditionalValues(): java.util.ArrayList<AdditionalValue>? {
+                        return combined.additionalValues
+                    }
+
+                    override fun getIsAnimationRequired(): Boolean? {
+                        return combined.isAnimationRequired
                     }
 
                 })

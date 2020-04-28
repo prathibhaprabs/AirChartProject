@@ -1,0 +1,51 @@
+{
+  "title": "Student records",
+  "xAxisTitle": "Projects",
+  "xAxisLabels": [
+	"Narendra",
+	"Rahul",
+	"Prakash",
+	"Sonia",
+	"Lalu"
+  ],
+  "yLeftAxisTitle": "Progress Value",
+  "yRightAxisTitle": "Progress range",
+  "yAxisBarValues": [
+	{
+	  "legendLabel": "Scope",
+	  "values": [
+		24.3,
+		12.1,
+		13.5,
+		12.7,
+		17.8
+	  ]
+	}
+  ],
+  "yAxisLineValues": [
+	{
+	  "legendLabel": "Scope range",
+	  "values": [
+		24.3,
+		12.4,
+		14.5,
+		12.9,
+		10.8
+	  ]
+	}
+  ],
+  "subTitle": "Subtitle of the chart",
+  "decimalFormatPattern": "0.0#",
+  "additionalValues": [
+	{
+	  "key": "Key1",
+	  "value": "Value1"
+	},
+	{
+	  "key": "Key2",
+	  "value": "Value2"
+	}
+  ],
+  "isCurved": true,
+  "isAnimationRequired": true
+}

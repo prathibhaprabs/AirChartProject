@@ -42,6 +42,14 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
+        combined.setOnClickListener {
+            startActivity(
+                Intent(this, ChartActivity::class.java).putExtra(
+                    ChartActivity.INTENT_EXTRA_CHART_TYPE,
+                    ChartActivity.ChartType.COMBINED.toString()
+                )
+            )
+        }
         supplyJson.setOnClickListener {
             val editText = EditText(this)
             editText.maxHeight = 600

@@ -300,6 +300,9 @@ class AirChart(
                         return combined.isAnimationRequired
                     }
 
+                    override fun getIsLineCurved(): Boolean? {
+                        return combined.isLineCurved
+                    }
                 })
             }
         } catch (e: Exception) {

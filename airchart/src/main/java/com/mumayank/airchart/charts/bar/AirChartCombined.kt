@@ -25,6 +25,7 @@ import com.mumayank.airchart.R
 import com.mumayank.airchart.data_classes.AdditionalValue
 import com.mumayank.airchart.data_classes.Value
 import com.mumayank.airchart.util.AirChartUtil
+import com.mumayank.airchart.util.AirChartUtil.Companion.STANDARD_BAR_WIDTH
 import com.mumayank.aircoroutine.AirCoroutine
 import kotlinx.android.synthetic.main.air_chart_view.view.*
 import kotlinx.coroutines.Dispatchers
@@ -75,7 +76,7 @@ class AirChartCombined {
             return
         }
 
-        fun getIsCurved(): Boolean? {
+        fun getIsLineCurved(): Boolean? {
             return false
         }
     }
@@ -174,7 +175,7 @@ class AirChartCombined {
                                 )
                         }
 
-                        if (iCombined.getIsCurved() == true) {
+                        if (iCombined.getIsLineCurved() == true) {
                             lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
                         }
 
@@ -188,7 +189,7 @@ class AirChartCombined {
                             )
                         )
                         lineDataSet.setDrawValues(false)
-
+                        lineDataSet.axisDependency = YAxis.AxisDependency.RIGHT
                         lineDataSetList.add(lineDataSet)
                     }
 
@@ -239,9 +240,11 @@ class AirChartCombined {
                                 barData.barWidth = 0.4f
                             }
                             else -> {
-                                barData.barWidth = AirChartUtil.STANDARD_BAR_WIDTH
+                                barData.barWidth = STANDARD_BAR_WIDTH
                             }
                         }
+
+                        barDataSet.axisDependency = YAxis.AxisDependency.LEFT
                         barDataSetList.add(barDataSet)
                     }
 
@@ -275,25 +278,22 @@ class AirChartCombined {
                             R.color.colorLightGray
                         )
                     combinedChart.xAxis.textSize = 12f
+                    combinedChart.xAxis.setAvoidFirstLastClipping(false)
+                    combinedChart.xAxis.labelCount = if (xLabels.size > 20) 20 else xLabels.size
+
                     combinedChart.xAxis.axisLineColor =
                         ContextCompat.getColor(
                             activity,
                             android.R.color.black
                         )
-                    combinedChart.xAxis.setAvoidFirstLastClipping(false)
-                    combinedChart.xAxis.labelCount = if (xLabels.size > 20) 20 else xLabels.size
 
+                    if (barData.colors.isNotEmpty())
+                        combinedChart.axisLeft.axisLineColor = barData.colors[0]
+                    if (lineData.colors.isNotEmpty())
+                        combinedChart.axisRight.axisLineColor = lineData.colors[0]
 
-                    combinedChart.axisRight.axisLineColor =
-                        ContextCompat.getColor(
-                            activity,
-                            android.R.color.black
-                        )
-
-                    combinedChart.axisLeft?.setDrawAxisLine(true)
-                    combinedChart.axisLeft?.setDrawLabels(true)
-                    combinedChart.axisRight?.setDrawLabels(true)
-                    combinedChart.axisRight?.setDrawAxisLine(true)
+                    combinedChart.axisLeft.granularity = 1f
+                    combinedChart.axisRight.granularity = 10f
 
                     applyAxisSettings(combinedChart.axisLeft, activity)
                     applyAxisSettings(combinedChart.axisRight, activity)
@@ -397,8 +397,8 @@ class AirChartCombined {
 
                     // setup spacing
                     val times = 0.5f
-                    val min = if (lineData.yMin < 0) lineData.yMin else 0f
-                    val max = if (lineData.yMax > 0) lineData.yMax else 0f
+                    val min = if (combinedData.yMin < 0) combinedChart.yMin else 0f
+                    val max = if (combinedChart.yMax > 0) combinedChart.yMax else 0f
                     combinedChart.axisLeft.axisMaximum = max + (max - min).absoluteValue * times
                     combinedChart.axisRight.axisMaximum = max + (max - min).absoluteValue * times
 
@@ -414,8 +414,8 @@ class AirChartCombined {
                         combinedChart.axisRight.axisMinimum = 0f
                     }
 
-                    combinedChart.xAxis?.axisMinimum = lineData.xMin - 0.5f
-                    combinedChart.xAxis?.axisMaximum = lineData.xMax + 0.5f
+                    combinedChart.xAxis?.axisMinimum = combinedData.xMin - 0.5f
+                    combinedChart.xAxis?.axisMaximum = combinedData.xMax + 0.5f
 
                     combinedChart.setMaxVisibleValueCount(20)
 
@@ -541,17 +541,14 @@ class AirChartCombined {
                     activity,
                     android.R.color.black
                 )
-            axis?.setDrawGridLines(false)
             axis?.isGranularityEnabled = true
-            axis?.granularity = 1f
             axis?.textSize = 12f
-            axis?.axisLineColor =
-                ContextCompat.getColor(
-                    activity,
-                    android.R.color.black
-                )
             axis?.axisMinimum = 0f
             axis?.setDrawTopYLabelEntry(true)
+            axis?.setDrawAxisLine(true)
+            axis?.setDrawLabels(true)
+            axis?.setDrawGridLines(false)
+            axis?.axisLineWidth = 3f
         }
     }
 }

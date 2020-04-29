@@ -129,6 +129,12 @@ class ChartActivity : AppCompatActivity() {
                         getData(1, 3, 0, 30)
                     ),
                     BarData(
+                        "20 values - far away - highest values",
+                        getLabels(25),
+                        getData(1, 25, 1000000, 5000000, 1)
+                    ),
+
+                    BarData(
                         "4 values",
                         getLabels(4),
                         getData(1, 4, 0, 30)
@@ -1014,55 +1020,56 @@ class ChartActivity : AppCompatActivity() {
                     CombinedData(
                         "No value",
                         arrayListOf(),
+                        arrayListOf(),
                         arrayListOf()
                     ),
                     CombinedData(
                         "1 value",
                         getLabels(1),
                         getData(1, 1, 10, 30, 1),
-                        getData(1, 1, 10, 30, 2)
+                        getData(1, 1, 100, 300, 2)
                     ),
                     CombinedData(
                         "2 values",
                         getLabels(2),
                         getData(1, 2, 10, 30, 1),
-                        getData(1, 2, 10, 30, 2)
+                        getData(1, 2, 100, 300, 2)
                     ),
                     CombinedData(
                         "3 values",
                         getLabels(3),
                         getData(1, 3, 0, 30, 1),
-                        getData(1, 3, 0, 30, 2)
+                        getData(1, 3, 0, 300, 2)
                     ),
                     CombinedData(
                         "4 values",
                         getLabels(4),
                         getData(1, 4, 0, 30, 1),
-                        getData(1, 4, 0, 30, 2)
+                        getData(1, 4, 0, 300, 2)
                     ),
                     CombinedData(
                         "8 values",
                         getLabels(8),
                         getData(1, 8, 0, 30, 1),
-                        getData(1, 8, 0, 30, 2)
+                        getData(1, 8, 0, 300, 2)
                     ),
                     CombinedData(
                         "8 values - large",
                         getLabels(8),
                         getData(1, 8, 100, 3000, 1),
-                        getData(1, 8, 100, 3000, 2)
+                        getData(1, 8, 1000, 30000, 2)
                     ),
                     CombinedData(
                         "16 values",
                         getLabels(16),
                         getData(1, 16, 0, 30, 1),
-                        getData(1, 16, 0, 30, 2)
+                        getData(1, 16, 0, 300, 2)
                     ),
                     CombinedData(
                         "32 values",
                         getLabels(32),
                         getData(1, 32, 0, 30, 1),
-                        getData(1, 32, 0, 30, 2)
+                        getData(1, 32, 0, 300, 2)
                     ),
                     CombinedData(
                         "32 values - far apart",
@@ -1074,24 +1081,24 @@ class ChartActivity : AppCompatActivity() {
                         "50 values",
                         getLabels(50),
                         getData(1, 50, 0, 30, 1),
-                        getData(1, 50, 0, 30, 2)
+                        getData(1, 50, 0, 300, 2)
                     ),
                     CombinedData(
                         "100 values",
                         getLabels(100),
                         getData(1, 100, 0, 30, 1),
-                        getData(1, 100, 0, 30, 2)
+                        getData(1, 100, 0, 300, 2)
                     ),
                     CombinedData(
                         "500 values",
                         getLabels(500),
-                        getData(1, 500, 0, 30, 1),
+                        getData(1, 500, 0, 300, 1),
                         getData(1, 500, 0, 30, 2)
                     ),
                     CombinedData(
                         "1000 values",
                         getLabels(1000),
-                        getData(1, 1000, 0, 30, 1),
+                        getData(1, 1000, 0, 300, 1),
                         getData(1, 1000, 0, 30, 2)
                     ),
 
@@ -1099,7 +1106,7 @@ class ChartActivity : AppCompatActivity() {
                     CombinedData(
                         "1 value - negative",
                         getLabels(1),
-                        getData(1, 1, -30, -10, 1),
+                        getData(1, 1, -300, -10, 1),
                         getData(1, 1, -30, -10, 2)
                     ),
                     CombinedData(
@@ -1195,11 +1202,13 @@ class ChartActivity : AppCompatActivity() {
                     CombinedData(
                         "20 values - no line",
                         getLabels(20),
+                        getData(1, 20, 100, 200),
                         getData(1, 20, 100, 200)
                     ),
                     CombinedData(
                         "20 values - no line - negative",
                         getLabels(20),
+                        getData(1, 20, -100, 200),
                         getData(1, 20, -100, 200)
                     ),
                     CombinedData(
@@ -1215,6 +1224,7 @@ class ChartActivity : AppCompatActivity() {
                         getData(1, 20, -200, -100, 2)
                     )
                 )
+
                 showRv(combinedData.size, fun(chartLayout: LinearLayout, position: Int) {
                     val data = combinedData[position]
                     showChartsInternal(
@@ -1224,7 +1234,7 @@ class ChartActivity : AppCompatActivity() {
                                 "x axis",
                                 data.xLabels,
                                 "y axis",
-                                "y axis",
+                                "y axis right",
                                 data.yBar,
                                 data.yLine,
                                 data.colors,
@@ -1232,7 +1242,7 @@ class ChartActivity : AppCompatActivity() {
                                 null,
                                 null,
                                 null,
-                                null
+                                true
                             )
                         )
                     )
@@ -1428,7 +1438,7 @@ class ChartActivity : AppCompatActivity() {
         val title: String,
         val xLabels: ArrayList<String>,
         val yBar: java.util.ArrayList<Value>,
-        val yLine: java.util.ArrayList<Value>? = null,
+        val yLine: java.util.ArrayList<Value>,
         val colors: ArrayList<String>? = null
     )
 }

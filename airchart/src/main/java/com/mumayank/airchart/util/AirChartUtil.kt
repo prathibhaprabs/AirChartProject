@@ -290,7 +290,7 @@ class AirChartUtil {
         }
 
         fun drawValuesAccordinglyInCombinedChart(combinedChart: CombinedChart) {
-            if (combinedChart.visibleXRange > 20) {
+            if (combinedChart.visibleXRange > 15) {
                 combinedChart.xAxis.setDrawLabels(false)
             } else {
                 combinedChart.xAxis.setDrawLabels(true)

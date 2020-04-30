@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.charts.CombinedChart
+import com.github.mikephil.charting.charts.CombinedChart.DrawOrder
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -25,7 +27,6 @@ import com.mumayank.airchart.R
 import com.mumayank.airchart.data_classes.AdditionalValue
 import com.mumayank.airchart.data_classes.Value
 import com.mumayank.airchart.util.AirChartUtil
-import com.mumayank.airchart.util.AirChartUtil.Companion.STANDARD_BAR_WIDTH
 import com.mumayank.aircoroutine.AirCoroutine
 import kotlinx.android.synthetic.main.air_chart_view.view.*
 import kotlinx.coroutines.Dispatchers
@@ -146,20 +147,25 @@ class AirChartCombined {
                             entries.add(Entry(index2.toFloat(), value2.toFloat()))
                         }
                         val lineDataSet = LineDataSet(entries, value.legendLabel)
+
+//                        lineDataSet.color = Color.rgb(0, 100, 0)
+//                        lineDataSet.lineWidth = 2.5f
+//                        lineDataSet.setCircleColor(Color.rgb(0, 100, 0))
+//                        lineDataSet.circleRadius = 5f
+//                        lineDataSet.fillColor = Color.rgb(0, 100, 0)
+//                        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+//                        lineDataSet.setDrawValues(true)
+//                        lineDataSet.valueTextSize = 10f
+//                        lineDataSet.valueTextColor = Color.rgb(0, 100, 0)
+//                        lineDataSet.axisDependency = YAxis.AxisDependency.LEFT
+
+
                         lineDataSet.valueTextSize = 12f
                         lineDataSet.valueTextColor =
                             ContextCompat.getColor(
                                 activity,
                                 android.R.color.black
                             )
-                        lineDataSet.valueFormatter = object : ValueFormatter() {
-                            override fun getFormattedValue(value: Float): String {
-                                val decimalFormatPattern =
-                                    iCombined.getDecimalFormatPattern() ?: "0.#"
-                                val mFormat = DecimalFormat(decimalFormatPattern)
-                                return mFormat.format(value.toDouble())
-                            }
-                        }
                         if (iCombined.getColors().isNullOrEmpty().not()) {
                             if (airChartLineValueItems.size > 1) {
                                 lineDataSet.color =
@@ -189,8 +195,18 @@ class AirChartCombined {
                             )
                         )
                         lineDataSet.setDrawValues(false)
-                        lineDataSet.axisDependency = YAxis.AxisDependency.RIGHT
+                        lineDataSet.axisDependency = YAxis.AxisDependency.LEFT
+
                         lineDataSetList.add(lineDataSet)
+
+                        lineDataSet.valueFormatter = object : ValueFormatter() {
+                            override fun getFormattedValue(value: Float): String {
+                                val decimalFormatPattern =
+                                    iCombined.getDecimalFormatPattern() ?: "0.#"
+                                val mFormat = DecimalFormat(decimalFormatPattern)
+                                return mFormat.format(value.toDouble())
+                            }
+                        }
                     }
 
                     for ((index, value) in airChartBarValueItems.withIndex()) {
@@ -199,12 +215,20 @@ class AirChartCombined {
                             barEntries.add(BarEntry(index2.toFloat(), value2.toFloat()))
                         }
                         val barDataSet = BarDataSet(barEntries, value.legendLabel)
+
+//                        barDataSet.color = Color.rgb(60, 220, 78)
+//                        barDataSet.valueTextColor = Color.rgb(60, 220, 78)
+//                        barDataSet.valueTextSize = 10f
+//                        barDataSet.axisDependency = YAxis.AxisDependency.RIGHT
+
+
                         barDataSet.valueTextSize = 12f
                         barDataSet.valueTextColor =
                             ContextCompat.getColor(
                                 activity,
                                 android.R.color.black
                             )
+
                         barDataSet.valueFormatter = object : ValueFormatter() {
                             override fun getFormattedValue(value: Float): String {
                                 val decimalFormatPattern =
@@ -213,211 +237,255 @@ class AirChartCombined {
                                 return mFormat.format(value.toDouble())
                             }
                         }
-                        if (iCombined.getColors().isNullOrEmpty().not()) {
-                            if (airChartValueItems.size > 1) {
-                                barDataSet.color =
-                                    AirChartUtil.getItemFromArrayAtIndexCyclically(colors, index)
-                            } else {
-                                barDataSet.colors = colors
-                            }
-                        } else {
-                            barDataSet.color =
-                                ContextCompat.getColor(
-                                    activity,
-                                    android.R.color.holo_orange_light
-                                )
-                        }
-                        barDataSet.setDrawValues(false)
-                        val barData = BarData(barDataSet)
-                        when (valuesCount) {
-                            1 -> {
-                                barData.barWidth = 0.4f
-                            }
-                            2 -> {
-                                barData.barWidth = 0.4f
-                            }
-                            3 -> {
-                                barData.barWidth = 0.4f
-                            }
-                            else -> {
-                                barData.barWidth = STANDARD_BAR_WIDTH
-                            }
-                        }
 
-                        barDataSet.axisDependency = YAxis.AxisDependency.LEFT
+//                        if (iCombined.getColors().isNullOrEmpty().not()) {
+//                            if (airChartValueItems.size > 1) {
+//                                barDataSet.color =
+//                                    AirChartUtil.getItemFromArrayAtIndexCyclically(colors, index)
+//                            } else {
+//                                barDataSet.colors = colors
+//                            }
+//                        } else {
+//                            barDataSet.color =
+//                                ContextCompat.getColor(
+//                                    activity,
+//                                    android.R.color.holo_orange_light
+//                                )
+//                        }
+//                        barDataSet.setDrawValues(true)
+//                        val barData = BarData(barDataSet)
+//                        when (valuesCount) {
+//                            1 -> {
+//                                barData.barWidth = 0.4f
+//                            }
+//                            2 -> {
+//                                barData.barWidth = 0.4f
+//                            }
+//                            3 -> {
+//                                barData.barWidth = 0.4f
+//                            }
+//                            else -> {
+//                                barData.barWidth = STANDARD_BAR_WIDTH
+//                            }
+//                        }
+//
+                        barDataSet.axisDependency = YAxis.AxisDependency.RIGHT
                         barDataSetList.add(barDataSet)
                     }
 
                     val barData = BarData(barDataSetList.toList())
                     val lineData = LineData(lineDataSetList.toList())
 
-                    combinedData.setData(lineData)
-                    combinedData.setData(barData)
+//                    combinedData.setData(barData)
+//                    combinedData.setData(lineData)
+//
+//                    combinedChart.data = combinedData
 
-                    combinedChart.data = combinedData
-                    combinedChart.setDrawMarkers(true)
+//                      combinedChart.setDrawMarkers(true)
+//
+//                    combinedChart.xAxis.valueFormatter =
+//                        IndexAxisValueFormatter(xLabels)
+//                    combinedChart.xAxis?.textColor =
+//                        ContextCompat.getColor(
+//                            activity,
+//                            android.R.color.black
+//                        )
+//                    combinedChart.xAxis?.setDrawAxisLine(true)
+//                    combinedChart.xAxis?.setDrawGridLines(true)
+//                    combinedChart.xAxis?.position = XAxis.XAxisPosition.BOTTOM
+//                    combinedChart.xAxis?.isGranularityEnabled = true
+//                    combinedChart.xAxis?.granularity = 1f
+//                    combinedChart.xAxis?.setDrawLabels(true)
+//                    combinedChart.xAxis.labelRotationAngle = -90f
+//                    combinedChart.xAxis.enableGridDashedLine(8f, 10f, 0f)
+//                    combinedChart.xAxis.gridColor =
+//                        ContextCompat.getColor(
+//                            activity,
+//                            R.color.colorLightGray
+//                        )
+//                    combinedChart.xAxis.textSize = 12f
+//                    combinedChart.xAxis.setAvoidFirstLastClipping(false)
+//                    combinedChart.xAxis.labelCount = if (xLabels.size > 20) 20 else xLabels.size
+//
+//                    combinedChart.xAxis.axisLineColor =
+//                        ContextCompat.getColor(
+//                            activity,
+//                            android.R.color.black
+//                        )
+//
+//                    if (barData.colors.isNotEmpty())
+//                        combinedChart.axisLeft.axisLineColor = barData.colors[0]
+//                    if (lineData.colors.isNotEmpty())
+//                        combinedChart.axisRight.axisLineColor = lineData.colors[0]
+//
+//                    combinedChart.axisLeft.granularity = 1f
+//                    combinedChart.axisRight.granularity = 10f
+//
+//                    applyAxisSettings(combinedChart.axisLeft, activity)
+//                    applyAxisSettings(combinedChart.axisRight, activity)
+//
+//                    combinedChart.renderer =
+//                        CustomCombinedChartRenderer(
+//                            combinedChart,
+//                            combinedChart.animator,
+//                            combinedChart.viewPortHandler
+//                        )
+//
+//                    // set zoom operations
+//                    combinedChart.onChartGestureListener = object : OnChartGestureListener {
+//                        override fun onChartGestureEnd(
+//                            me: MotionEvent?,
+//                            lastPerformedGesture: ChartTouchListener.ChartGesture?
+//                        ) {
+//                            // do nothing
+//                        }
+//
+//                        override fun onChartFling(
+//                            me1: MotionEvent?,
+//                            me2: MotionEvent?,
+//                            velocityX: Float,
+//                            velocityY: Float
+//                        ) {
+//                            // do nothing
+//                        }
+//
+//                        override fun onChartSingleTapped(me: MotionEvent?) {
+//                            // do nothing
+//                        }
+//
+//                        override fun onChartGestureStart(
+//                            me: MotionEvent?,
+//                            lastPerformedGesture: ChartTouchListener.ChartGesture?
+//                        ) {
+//                            // do nothing
+//                        }
+//
+//                        override fun onChartScale(
+//                            me: MotionEvent?,
+//                            scaleX: Float,
+//                            scaleY: Float
+//                        ) {
+//                            AirChartUtil.drawValuesAccordinglyInCombinedChart(combinedChart)
+//                        }
+//
+//                        override fun onChartLongPressed(me: MotionEvent?) {
+//                            // do nothing
+//                        }
+//
+//                        override fun onChartDoubleTapped(me: MotionEvent?) {
+//                            // do nothing
+//                        }
+//
+//                        override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
+//                            // do nothing
+//                        }
+//
+//                    }
+//                    combinedChart.setExtraOffsets(0f, 16f, 0f, 16f)
+//
+//                    // setup chart
+//                    combinedChart.description = null
+//                    combinedChart.setVisibleXRangeMinimum(2f)
+//                    combinedChart.setNoDataText("No data to display")
+//                    combinedChart.setGridBackgroundColor(
+//                        ContextCompat.getColor(
+//                            activity,
+//                            android.R.color.white
+//                        )
+//                    )
+//                    combinedChart.setPinchZoom(false)
+//                    combinedChart.isDoubleTapToZoomEnabled = false
+//                    combinedChart.setDrawBorders(false)
+//                    combinedChart.setBorderWidth(.4f)
+//                    combinedChart.dragDecelerationFrictionCoef = 1f
+//                    combinedChart.isAutoScaleMinMaxEnabled = false
+//                    combinedChart.setHardwareAccelerationEnabled(false)
+//                    combinedChart.isFocusableInTouchMode = false
+//                    combinedChart.isFocusable = false
+//                    combinedChart.isLongClickable = false
+//                    combinedChart.isHighlightPerDragEnabled = false
+//                    combinedChart.extraBottomOffset = 8f
+//                    combinedChart.legend?.isEnabled = false
+//                    combinedChart.setOnChartValueSelectedListener(object :
+//                        OnChartValueSelectedListener {
+//                        override fun onNothingSelected() {
+//                            iCombined.onNoValueSelected()
+//                        }
+//
+//                        override fun onValueSelected(e: Entry?, h: Highlight?) {
+//                            if (e == null) {
+//                                return
+//                            }
+//                            combinedChart.highlightValues(null)
+//                            iCombined.onValueSelected(e)
+//                        }
+//                    })
+//
+//                    // setup spacing
+//                    val times = 0.5f
+//                    val min = if (combinedData.yMin < 0) combinedChart.yMin else 0f
+//                    val max = if (combinedChart.yMax > 0) combinedChart.yMax else 0f
+//                    combinedChart.axisLeft.axisMaximum = max + (max - min).absoluteValue * times
+//                    combinedChart.axisRight.axisMaximum = max + (max - min).absoluteValue * times
+//
+//                    if (min < 0) {
+//                        val limitLine = LimitLine(0f, "")
+//                        limitLine.lineColor = Color.BLACK
+//                        limitLine.lineWidth = 0.5f
+//                        combinedChart.axisLeft.addLimitLine(limitLine)
+//                        combinedChart.axisLeft.axisMinimum = min + (min - max) * times
+//                        combinedChart.axisRight.axisMinimum = min + (min - max) * times
+//                    } else {
+//                        combinedChart.axisLeft.axisMinimum = 0f
+//                        combinedChart.axisRight.axisMinimum = 0f
+//                    }
+//
+//                    combinedChart.xAxis?.axisMinimum = combinedData.xMin - 0.5f
+//                    combinedChart.xAxis?.axisMaximum = combinedData.xMax + 0.5f
+//
+//                    combinedChart.setMaxVisibleValueCount(20)
+//
+//                    combinedChart.drawOrder = arrayOf(
+//                        DrawOrder.BAR, DrawOrder.LINE
+//                    )
 
-                    combinedChart.xAxis.valueFormatter =
-                        IndexAxisValueFormatter(xLabels)
-                    combinedChart.xAxis?.textColor =
-                        ContextCompat.getColor(
-                            activity,
-                            android.R.color.black
-                        )
-                    combinedChart.xAxis?.setDrawAxisLine(true)
-                    combinedChart.xAxis?.setDrawGridLines(true)
-                    combinedChart.xAxis?.position = XAxis.XAxisPosition.BOTTOM
-                    combinedChart.xAxis?.isGranularityEnabled = true
-                    combinedChart.xAxis?.granularity = 1f
-                    combinedChart.xAxis?.setDrawLabels(true)
-                    combinedChart.xAxis.labelRotationAngle = -90f
-                    combinedChart.xAxis.enableGridDashedLine(8f, 10f, 0f)
-                    combinedChart.xAxis.gridColor =
-                        ContextCompat.getColor(
-                            activity,
-                            R.color.colorLightGray
-                        )
-                    combinedChart.xAxis.textSize = 12f
-                    combinedChart.xAxis.setAvoidFirstLastClipping(false)
-                    combinedChart.xAxis.labelCount = if (xLabels.size > 20) 20 else xLabels.size
 
-                    combinedChart.xAxis.axisLineColor =
-                        ContextCompat.getColor(
-                            activity,
-                            android.R.color.black
-                        )
+                    combinedChart.description.isEnabled = false
+                    combinedChart.setBackgroundColor(Color.WHITE)
+                    combinedChart.setDrawGridBackground(false)
+                    combinedChart.setDrawBarShadow(false)
+                    combinedChart.isHighlightFullBarEnabled = false
 
-                    if (barData.colors.isNotEmpty())
-                        combinedChart.axisLeft.axisLineColor = barData.colors[0]
-                    if (lineData.colors.isNotEmpty())
-                        combinedChart.axisRight.axisLineColor = lineData.colors[0]
-
-                    combinedChart.axisLeft.granularity = 1f
-                    combinedChart.axisRight.granularity = 10f
-
-                    applyAxisSettings(combinedChart.axisLeft, activity)
-                    applyAxisSettings(combinedChart.axisRight, activity)
-
-                    combinedChart.renderer =
-                        CustomCombinedChartRenderer(
-                            combinedChart,
-                            combinedChart.animator,
-                            combinedChart.viewPortHandler
-                        )
-
-                    // set zoom operations
-                    combinedChart.onChartGestureListener = object : OnChartGestureListener {
-                        override fun onChartGestureEnd(
-                            me: MotionEvent?,
-                            lastPerformedGesture: ChartTouchListener.ChartGesture?
-                        ) {
-                            // do nothing
-                        }
-
-                        override fun onChartFling(
-                            me1: MotionEvent?,
-                            me2: MotionEvent?,
-                            velocityX: Float,
-                            velocityY: Float
-                        ) {
-                            // do nothing
-                        }
-
-                        override fun onChartSingleTapped(me: MotionEvent?) {
-                            // do nothing
-                        }
-
-                        override fun onChartGestureStart(
-                            me: MotionEvent?,
-                            lastPerformedGesture: ChartTouchListener.ChartGesture?
-                        ) {
-                            // do nothing
-                        }
-
-                        override fun onChartScale(
-                            me: MotionEvent?,
-                            scaleX: Float,
-                            scaleY: Float
-                        ) {
-                            AirChartUtil.drawValuesAccordinglyInCombinedChart(combinedChart)
-                        }
-
-                        override fun onChartLongPressed(me: MotionEvent?) {
-                            // do nothing
-                        }
-
-                        override fun onChartDoubleTapped(me: MotionEvent?) {
-                            // do nothing
-                        }
-
-                        override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
-                            // do nothing
-                        }
-
-                    }
-                    combinedChart.setExtraOffsets(0f, 16f, 0f, 16f)
-
-                    // setup chart
-                    combinedChart.description = null
-                    combinedChart.setVisibleXRangeMinimum(2f)
-                    combinedChart.setNoDataText("No data to display")
-                    combinedChart.setGridBackgroundColor(
-                        ContextCompat.getColor(
-                            activity,
-                            android.R.color.white
-                        )
+                    combinedChart.drawOrder = arrayOf(
+                        DrawOrder.BAR, DrawOrder.LINE
                     )
-                    combinedChart.setPinchZoom(false)
-                    combinedChart.isDoubleTapToZoomEnabled = false
-                    combinedChart.setDrawBorders(false)
-                    combinedChart.setBorderWidth(.4f)
-                    combinedChart.dragDecelerationFrictionCoef = 1f
-                    combinedChart.isAutoScaleMinMaxEnabled = false
-                    combinedChart.setHardwareAccelerationEnabled(false)
-                    combinedChart.isFocusableInTouchMode = false
-                    combinedChart.isFocusable = false
-                    combinedChart.isLongClickable = false
-                    combinedChart.isHighlightPerDragEnabled = false
-                    combinedChart.extraBottomOffset = 8f
-                    combinedChart.legend?.isEnabled = false
-                    combinedChart.setOnChartValueSelectedListener(object :
-                        OnChartValueSelectedListener {
-                        override fun onNothingSelected() {
-                            iCombined.onNoValueSelected()
-                        }
 
-                        override fun onValueSelected(e: Entry?, h: Highlight?) {
-                            if (e == null) {
-                                return
-                            }
-                            combinedChart.highlightValues(null)
-                            iCombined.onValueSelected(e)
-                        }
-                    })
 
-                    // setup spacing
-                    val times = 0.5f
-                    val min = if (combinedData.yMin < 0) combinedChart.yMin else 0f
-                    val max = if (combinedChart.yMax > 0) combinedChart.yMax else 0f
-                    combinedChart.axisLeft.axisMaximum = max + (max - min).absoluteValue * times
-                    combinedChart.axisRight.axisMaximum = max + (max - min).absoluteValue * times
 
-                    if (min < 0) {
-                        val limitLine = LimitLine(0f, "")
-                        limitLine.lineColor = Color.BLACK
-                        limitLine.lineWidth = 0.5f
-                        combinedChart.axisLeft.addLimitLine(limitLine)
-                        combinedChart.axisLeft.axisMinimum = min + (min - max) * times
-                        combinedChart.axisRight.axisMinimum = min + (min - max) * times
-                    } else {
-                        combinedChart.axisLeft.axisMinimum = 0f
-                        combinedChart.axisRight.axisMinimum = 0f
-                    }
+                    val rightAxis: YAxis = combinedChart.axisRight
+                    rightAxis.setDrawGridLines(false)
+                    rightAxis.granularity = 10f
+                    rightAxis.axisMinimum = 0f
 
-                    combinedChart.xAxis?.axisMinimum = combinedData.xMin - 0.5f
-                    combinedChart.xAxis?.axisMaximum = combinedData.xMax + 0.5f
+                    val leftAxis: YAxis = combinedChart.axisLeft
+                    leftAxis.setDrawGridLines(false)
+                    rightAxis.granularity = 1f
+                    leftAxis.axisMinimum = 0f
 
-                    combinedChart.setMaxVisibleValueCount(20)
+                    val xAxis: XAxis = combinedChart.xAxis
+                    xAxis.axisMinimum = 0f
+                    xAxis.granularity = 1f
+
+
+                    val data = CombinedData()
+
+                    data.setData(lineData)
+                    data.setData(barData)
+
+                    xAxis.axisMaximum = data.xMax + 0.25f
+
+                    combinedChart.data = data
+                    combinedChart.invalidate()
 
                     return true
                 }

@@ -1242,7 +1242,7 @@ class ChartActivity : AppCompatActivity() {
                                 null,
                                 null,
                                 null,
-                                true
+                                false
                             )
                         )
                     )

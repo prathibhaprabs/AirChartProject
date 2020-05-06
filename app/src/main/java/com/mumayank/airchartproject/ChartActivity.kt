@@ -1075,7 +1075,7 @@ class ChartActivity : AppCompatActivity() {
                         "32 values - far apart",
                         getLabels(32),
                         getData(1, 32, 0, 30000, 1),
-                        getData(1, 32, 0, 30000, 2)
+                        getData(1, 32, 100, 20000, 2)
                     ),
                     CombinedData(
                         "50 values",
@@ -1087,7 +1087,7 @@ class ChartActivity : AppCompatActivity() {
                         "100 values",
                         getLabels(100),
                         getData(1, 100, 0, 30, 1),
-                        getData(1, 100, 0, 300, 2)
+                        getData(1, 100, 100, 300, 2)
                     ),
                     CombinedData(
                         "500 values",
@@ -1179,43 +1179,43 @@ class ChartActivity : AppCompatActivity() {
                         "500 values - negative",
                         getLabels(500),
                         getData(1, 500, -2000, 3000, 1),
-                        getData(1, 500, -2000, 3000, 2)
+                        getData(1, 500, -1000, 2000, 2)
                     ),
                     CombinedData(
                         "1000 values - negative",
                         getLabels(1000),
                         getData(1, 1000, -1500, 3000, 1),
-                        getData(1, 1000, -1500, 3000, 2)
+                        getData(1, 1000, -1500, 2000, 2)
                     ),
                     CombinedData(
                         "20 values - far away - highest values",
                         getLabels(20),
                         getData(1, 20, 10000, 1000000, 1),
-                        getData(1, 20, 10000, 1000000, 2)
+                        getData(1, 20, 1000, 100000, 2)
                     ),
                     CombinedData(
                         "20 values - far away - highest values - negative",
                         getLabels(1000),
                         getData(1, 20, -1000000, -10000, 1),
-                        getData(1, 20, -1000000, -10000, 2)
+                        getData(1, 20, -100000, 1000, 2)
                     ),
                     CombinedData(
                         "20 values - no line",
                         getLabels(20),
                         getData(1, 20, 100, 200),
-                        getData(1, 20, 100, 200)
+                        getData(1, 20, 90, 290)
                     ),
                     CombinedData(
                         "20 values - no line - negative",
                         getLabels(20),
                         getData(1, 20, -100, 200),
-                        getData(1, 20, -100, 200)
+                        getData(1, 20, -150, 150)
                     ),
                     CombinedData(
                         "20 values - no line - 2 yaxis",
                         getLabels(20),
                         getData(1, 20, 100, 200, 1),
-                        getData(1, 20, 100, 200, 2)
+                        getData(1, 20, 100, 600, 2)
                     ),
                     CombinedData(
                         "20 values - no line - 2 yaxis - negative",

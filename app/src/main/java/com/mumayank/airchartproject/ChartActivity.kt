@@ -1411,7 +1411,51 @@ class ChartActivity : AppCompatActivity() {
                 */
             }
 
-            ChartType.COMBINED -> AirChart(this, viewGroup).showCombinedChart(jsonString)
+            ChartType.COMBINED -> {
+                AirChart(this, viewGroup).showCombinedChart(jsonString)
+
+                /*
+                AirChart(this, viewGroup).showCombinedChart(object : AirChartCombined.ICombined{
+                    override fun getTitle(): String {
+                        return "title of the chart"
+                    }
+
+                    override fun getXAxisTitle(): String {
+                        return "this is X-axis"
+                    }
+
+                    override fun getXAxisLabels(): java.util.ArrayList<String> {
+                        return arrayListOf("Student1", "Student2", "Student3")
+                    }
+
+                    override fun getYLeftAxisTitle(): String {
+                        return "this is Y-axis"
+                    }
+
+                    override fun getYRightAxisTitle(): String {
+                        return "this is Y-axis right"
+                    }
+
+                    override fun getYAxisBarValues(): java.util.ArrayList<Value> {
+                        return arrayListOf(
+                            Value(
+                                "marks in sem 2",
+                                arrayListOf(50.5, 40.9, 39.5)
+                            )
+                        )
+                    }
+
+                    override fun getYAxisLineValues(): java.util.ArrayList<Value> {
+                        return arrayListOf(
+                            Value(
+                                "marks in sem 1",
+                                arrayListOf(150.5, 140.9, 139.5)
+                            )
+                        )
+                    }
+                })
+                */
+            }
         }
     }
 

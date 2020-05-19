@@ -15,8 +15,41 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        bar.setOnClickListener { startActivity(Intent(this, ChartActivity::class.java).putExtra(ChartActivity.INTENT_EXTRA_CHART_TYPE, ChartActivity.ChartType.BAR.toString())) }
-        horizontalBar.setOnClickListener { startActivity(Intent(this, ChartActivity::class.java).putExtra(ChartActivity.INTENT_EXTRA_CHART_TYPE, ChartActivity.ChartType.HORIZONTAL_BAR.toString())) }
+        bar.setOnClickListener {
+            startActivity(
+                Intent(this, ChartActivity::class.java).putExtra(
+                    ChartActivity.INTENT_EXTRA_CHART_TYPE,
+                    ChartActivity.ChartType.BAR.toString()
+                )
+            )
+        }
+        horizontalBar.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    ChartActivity::class.java
+                ).putExtra(
+                    ChartActivity.INTENT_EXTRA_CHART_TYPE,
+                    ChartActivity.ChartType.HORIZONTAL_BAR.toString()
+                )
+            )
+        }
+        line.setOnClickListener {
+            startActivity(
+                Intent(this, ChartActivity::class.java).putExtra(
+                    ChartActivity.INTENT_EXTRA_CHART_TYPE,
+                    ChartActivity.ChartType.LINE.toString()
+                )
+            )
+        }
+        combined.setOnClickListener {
+            startActivity(
+                Intent(this, ChartActivity::class.java).putExtra(
+                    ChartActivity.INTENT_EXTRA_CHART_TYPE,
+                    ChartActivity.ChartType.COMBINED.toString()
+                )
+            )
+        }
         supplyJson.setOnClickListener {
             val editText = EditText(this)
             editText.maxHeight = 600
@@ -29,10 +62,16 @@ class MainActivity : AppCompatActivity() {
                     val string = editText.text.toString()
                     try {
                         val json = JSONObject(string)
-                        startActivity(Intent(this, ChartActivity::class.java).putExtra(ChartActivity.INTENT_EXTRA_DATA, string))
+                        startActivity(
+                            Intent(
+                                this,
+                                ChartActivity::class.java
+                            ).putExtra(ChartActivity.INTENT_EXTRA_DATA, string)
+                        )
                         alertDialog?.hide()
                     } catch (e: Exception) {
-                        Toast.makeText(this, "Invalid json + ${e.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Invalid json + ${e.message}", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
                 .setNegativeButton("cancel") { _, _ ->
